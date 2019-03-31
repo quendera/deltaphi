@@ -1,6 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
+[ext_resource path="res://assets/audio/track1.wav" type="AudioStream" id=2]
+[ext_resource path="res://assets/audio/track2.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/audio/track3.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/audio/track4.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/Roboto-Regular.ttf" type="DynamicFontData" id=6]
 
 [sub_resource type="AudioStreamMicrophone" id=1]
 
@@ -172,6 +177,32 @@ tracks/1/keys = {
 "values": [ -80.0, 0.0 ]
 }
 
+[sub_resource type="Animation" id=9]
+resource_name = "letras"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Text:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5, 3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="DynamicFont" id=8]
+size = 400
+font_data = ExtResource( 6 )
+
+[sub_resource type="Gradient" id=10]
+colors = PoolColorArray( 0, 0, 0, 1, 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=11]
+gradient = SubResource( 10 )
+
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
 
@@ -186,20 +217,27 @@ bus = "RecOut"
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
 
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 5.0
+
 [node name="PathA" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
 bus = "PathA"
 
 [node name="PathB" type="AudioStreamPlayer" parent="."]
-volume_db = -80.0
+stream = ExtResource( 3 )
 bus = "PathB"
 
 [node name="PathC" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
 bus = "PathC"
 
 [node name="PathD" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
 bus = "PathD"
 
 [node name="PlayLetters" type="AudioStreamPlayer" parent="."]
+pitch_scale = 0.75
 bus = "Letters"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -209,5 +247,31 @@ anims/AD = SubResource( 4 )
 anims/BC = SubResource( 5 )
 anims/BD = SubResource( 6 )
 anims/CD = SubResource( 7 )
+anims/letras = SubResource( 9 )
+
+[node name="Text" type="RichTextLabel" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -176.371
+margin_top = -213.39
+margin_right = 777.629
+margin_bottom = 347.61
+custom_fonts/normal_font = SubResource( 8 )
+scroll_active = false
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 960.191, 588.504 )
+scale = Vector2( 1, 1312.23 )
+z_index = -5
+texture = SubResource( 11 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
+[connection signal="finished" from="PathA" to="." method="_on_PathA_finished"]
+[connection signal="finished" from="PathB" to="." method="_on_PathB_finished"]
+[connection signal="finished" from="PathC" to="." method="_on_PathC_finished"]
+[connection signal="finished" from="PathD" to="." method="_on_PathD_finished"]
