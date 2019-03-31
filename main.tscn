@@ -177,7 +177,7 @@ tracks/1/keys = {
 "values": [ -80.0, 0.0 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=8]
 resource_name = "letras"
 length = 3.0
 tracks/0/type = "value"
@@ -193,7 +193,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=9]
 size = 400
 font_data = ExtResource( 6 )
 
@@ -212,12 +212,14 @@ autoplay = true
 bus = "Record"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-bus = "RecOut"
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
 
 [node name="Timer2" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="Timer3" type="Timer" parent="."]
 wait_time = 5.0
 
 [node name="PathA" type="AudioStreamPlayer" parent="."]
@@ -247,7 +249,7 @@ anims/AD = SubResource( 4 )
 anims/BC = SubResource( 5 )
 anims/BD = SubResource( 6 )
 anims/CD = SubResource( 7 )
-anims/letras = SubResource( 9 )
+anims/letras = SubResource( 8 )
 
 [node name="Text" type="RichTextLabel" parent="."]
 modulate = Color( 1, 1, 1, 0 )
@@ -259,7 +261,7 @@ margin_left = -176.371
 margin_top = -213.39
 margin_right = 777.629
 margin_bottom = 347.61
-custom_fonts/normal_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 9 )
 scroll_active = false
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -269,8 +271,8 @@ z_index = -5
 texture = SubResource( 11 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="timeout" from="Timer2" to="." method="_on_Timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
+[connection signal="timeout" from="Timer3" to="." method="_on_Timer3_timeout"]
 [connection signal="finished" from="PathA" to="." method="_on_PathA_finished"]
 [connection signal="finished" from="PathB" to="." method="_on_PathB_finished"]
 [connection signal="finished" from="PathC" to="." method="_on_PathC_finished"]

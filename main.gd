@@ -1,10 +1,10 @@
 extends Node
 
-var effect
-var recording
 var letter_index
 var tracknr
 var letters = {"phi" : "φ" , "beta" : "β", "gamma" : "γ" , "mu" : "μ", "lambda" : "λ" , "psi" : "ψ", "theta" : "θ", "delta" : "δ"}
+var index = AudioServer.get_bus_index("Record")
+var effect = AudioServer.get_bus_effect(index, 0)
 
 func _ready():
 	init()
@@ -14,7 +14,7 @@ func init():
 	var rng = randf()
 	print(rng)
 	
-	$Timer2.set_wait_time(10)
+	$Timer2.set_wait_time(1)
 	$Timer2.set_one_shot(1)
 	$Timer2.start()
 	
@@ -35,6 +35,8 @@ func _on_Timer2_timeout():
 	letter_index = "phi" #sets first letter to phi
 	play_letter(letter_index)
 
+
+
 func play_letter(letter_index):
 	print(letter_index)
 	start_recording()
@@ -45,23 +47,25 @@ func play_letter(letter_index):
 
 
 func start_recording():
-	var index = AudioServer.get_bus_index("Record")
-	effect = AudioServer.get_bus_effect(index, 0)
-	$Timer.set_wait_time(56)
+	$Timer.set_wait_time(6)
 	$Timer.set_one_shot(1)
 	$Timer.start()
+	$Timer3.set_wait_time(5)
+	$Timer3.set_one_shot(1)
+	$Timer3.start()
 	effect.set_recording_active(true)
 
-func _on_Timer_timeout():
-	recording = effect.get_recording()
+
+func _on_Timer3_timeout():
+	var recording = effect.get_recording()
 	effect.set_recording_active(false)
 	var data = recording.get_data()
-	print(data)
 	print(data.size())
 	$AudioStreamPlayer.stream = recording
+	recording.save_to_wav("res://test.wav")
 	$AudioStreamPlayer.play()
 	
-	var rng = randf()
+func _on_Timer_timeout():	
 	var idx = letter_index
 	
 	#LAYER 1
@@ -105,3 +109,5 @@ func _on_PathC_finished():
 
 func _on_PathD_finished():
 	init()
+
+
