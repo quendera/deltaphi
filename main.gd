@@ -7,6 +7,7 @@ var index = AudioServer.get_bus_index("Record")
 var effect = AudioServer.get_bus_effect(index, 0)
 
 func _ready():
+	$AudioStreamRecord.stop()
 	init()
 
 
@@ -14,7 +15,7 @@ func init():
 	var rng = randf()
 	print(rng)
 	
-	$Timer2.set_wait_time(1)
+	$Timer2.set_wait_time(10)
 	$Timer2.set_one_shot(1)
 	$Timer2.start()
 	
@@ -47,9 +48,13 @@ func play_letter(letter_index):
 
 
 func start_recording():
-	$Timer.set_wait_time(6)
+	var index = AudioServer.get_bus_index("Record")
+	var effect = AudioServer.get_bus_effect(index, 0)
+	AudioServer.set_bus_mute ( index, true )
+	$AudioStreamRecord.play()
+	$Timer.set_wait_time(56)
 	$Timer.set_one_shot(1)
-	$Timer.start()
+	$Timer.start()	
 	$Timer3.set_wait_time(5)
 	$Timer3.set_one_shot(1)
 	$Timer3.start()
@@ -57,16 +62,21 @@ func start_recording():
 
 
 func _on_Timer3_timeout():
+	AudioServer.set_bus_mute ( index, false)
+	var index = AudioServer.get_bus_index("Record")
+	var effect = AudioServer.get_bus_effect(index, 0)
 	var recording = effect.get_recording()
 	effect.set_recording_active(false)
 	var data = recording.get_data()
 	print(data.size())
 	$AudioStreamPlayer.stream = recording
-	recording.save_to_wav("res://test.wav")
+	recording.save_to_wav("res://recording"+ String(OS.get_unix_time()) + ".wav")
+	$AudioStreamRecord.stop()
 	$AudioStreamPlayer.play()
 	
 func _on_Timer_timeout():	
 	var idx = letter_index
+	#$AudioStreamPlayer.stop()
 	
 	#LAYER 1
 	if tracknr == 1:
@@ -109,5 +119,3 @@ func _on_PathC_finished():
 
 func _on_PathD_finished():
 	init()
-
-

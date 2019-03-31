@@ -15,11 +15,12 @@ resource_name = "PitchShift"
 pitch_scale = 1.25
 
 [resource]
+bus/0/volume_db = 5.4
 bus/1/name = "Record"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
-bus/1/volume_db = 0.0
+bus/1/volume_db = 4.9
 bus/1/send = "Master"
 bus/1/effect/0/effect = SubResource( 1 )
 bus/1/effect/0/enabled = true
@@ -27,7 +28,7 @@ bus/2/name = "Letters"
 bus/2/solo = false
 bus/2/mute = false
 bus/2/bypass_fx = false
-bus/2/volume_db = 0.0
+bus/2/volume_db = -6.2
 bus/2/send = "Master"
 bus/2/effect/0/effect = SubResource( 2 )
 bus/2/effect/0/enabled = true
